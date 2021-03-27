@@ -15,10 +15,18 @@ contract Marketplace {
         bool purchased;
     }
 
-    event ProductCreated(
+    event ProductCreated (
         uint256 id,
         string name,
         uint256 price,
+        address payable owner,
+        bool purchased
+    );
+
+    event ProductPurchased (
+        uint id,
+        string name,
+        uint price,
         address payable owner,
         bool purchased
     );
