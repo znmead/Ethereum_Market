@@ -4,6 +4,7 @@ import './App.css';
 import Web3 from 'web3';
 import Navbar from './Navbar.js';
 import Marketplace from '..//abis/Marketplace.json';
+import Main from './Main';
 
 class App extends Component {
 
@@ -27,20 +28,36 @@ class App extends Component {
 
   async loadBlockchainData() {
     const web3 = window.web3
+    // Load account
     const accounts = await web3.eth.getAccounts()
     console.log(accounts);
     this.setState({ account: accounts[0] })
+
     const networkId = await web3.eth.net.getId()
     const networkData = Marketplace.networks[networkId]
-    if(networkData) {
+
+    if (networkData) {
       const marketplace = web3.eth.Contract(Marketplace.abi, networkData.address)
+      this.setState({ marketplace })
       console.log(marketplace)
+      const productCount = await marketplace.methods.productCount().call()
+      console.log(productCount.toString())
+      this.setState({ loading: false })
     } else {
       window.alert('Marketplace contract not deployed to detected network.')
     }
   }
 
+  createProduct(name, price) {
+    this.setState({ loading: true })
+    this.state.marketplace.methods.createProduct(name, price).send({ from: this.state.account })
+      .once('reciept', (reciept) => {
+        this.setState({ loading: false })
+      })
+  }
+
   constructor(props) {
+
     super(props)
     this.state = {
       account: '',
@@ -48,6 +65,7 @@ class App extends Component {
       products: [],
       loading: true
     }
+    this.createProduct = this.createProduct.bind(this)
   }
 
 
@@ -59,27 +77,12 @@ class App extends Component {
         <Navbar account={this.state.account} />
         <div className="container-fluid bg-dark mt-5">
           <div className="row">
-            <main role="main" className="col-lg-12 d-flex text-center">
-              <div className="content mr-auto ml-auto">
-                <a
-                  href="https://www.linkedin.com/in/znmead/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <img src={logo} className="App-logo" alt="logo" />
-                </a>
-                <h1>Contact Me</h1>
-                <p>
-                </p>
-                <a
-                  className="App-link"
-                  href="https://www.linkedin.com/in/znmead/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Ethereum Demo
-                </a>
-              </div>
+            <main role="main" className="col-lg-12 d-flex">
+              <img src={logo} className="App-logo" alt="logo" />
+              {this.state.loading
+                ? <div id="loader" className="text-center"><p className="text-center">Loading...</p></div>
+                : <Main createProduct={this.createProduct} />
+              }
             </main>
           </div>
         </div>
@@ -89,3 +92,5 @@ class App extends Component {
 }
 
 export default App;
+
+
