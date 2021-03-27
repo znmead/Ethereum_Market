@@ -29,7 +29,6 @@ class App extends Component {
                 </a>
                 <h1>Ethereum Demo</h1>
                 <p>
-                  Jah <code>src/components/App.js</code> and save to reload.
                 </p>
                 <a
                   className="App-link"
