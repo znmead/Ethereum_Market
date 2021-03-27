@@ -13,7 +13,7 @@ class App extends Component {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Dapp University
+            Ethereum Demo
           </a>
         </nav>
         <div className="container-fluid mt-5">
@@ -27,9 +27,9 @@ class App extends Component {
                 >
                   <img src={logo} className="App-logo" alt="logo" />
                 </a>
-                <h1>Dapp University Starter Kit</h1>
+                <h1>Ethereum Demo</h1>
                 <p>
-                  Edit <code>src/components/App.js</code> and save to reload.
+                  Jah <code>src/components/App.js</code> and save to reload.
                 </p>
                 <a
                   className="App-link"
@@ -37,7 +37,7 @@ class App extends Component {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  LEARN BLOCKCHAIN <u><b>NOW! </b></u>
+                  Ethereum Demo
                 </a>
               </div>
             </main>
