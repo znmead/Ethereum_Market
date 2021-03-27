@@ -3,6 +3,7 @@ import logo from '../logo.png';
 import './App.css';
 import Web3 from 'web3';
 import Navbar from './Navbar.js';
+import Marketplace from '..//abis/Marketplace.json';
 
 class App extends Component {
 
@@ -29,6 +30,14 @@ class App extends Component {
     const accounts = await web3.eth.getAccounts()
     console.log(accounts);
     this.setState({ account: accounts[0] })
+    const networkId = await web3.eth.net.getId()
+    const networkData = Marketplace.networks[networkId]
+    if(networkData) {
+      const marketplace = web3.eth.Contract(Marketplace.abi, networkData.address)
+      console.log(marketplace)
+    } else {
+      window.alert('Marketplace contract not deployed to detected network.')
+    }
   }
 
   constructor(props) {
@@ -46,7 +55,7 @@ class App extends Component {
 
   render() {
     return (
-      <div>
+      <div className="main bg-dark">
         <Navbar account={this.state.account} />
         <div className="container-fluid bg-dark mt-5">
           <div className="row">
